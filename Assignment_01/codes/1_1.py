@@ -1,6 +1,7 @@
 import numpy as np
 from scipy import signal, vectorize
 from matplotlib import pyplot as plt
+import os
 
 N = 100
 num = [1, 2, 1]
@@ -20,3 +21,4 @@ plt.xlabel('n')
 plt.ylabel('$h(n)$')
 plt.grid()
 plt.savefig('../figs/1_1.png')
+os.system('termux-open ../figs/1_1.png')
