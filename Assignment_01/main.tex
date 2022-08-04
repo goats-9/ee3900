@@ -570,7 +570,20 @@ $ python3 7_1.py
 \item Repeat all the exercises in the previous sections for the above $a$ and $b$.
 
 \solution
+The filter frequency response is plotted at
+\begin{lstlisting}
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/7_2_1.py
+\end{lstlisting}
+and can be generated using
+\begin{lstlisting}
+$ python3 7_2_1.py
+\end{lstlisting}
 
+\begin{figure}[!htb]
+	\includegraphics[width=\columnwidth]{figs/7_2_1.png}
+	\caption{Filter frequency response}
+	\label{fig:butter-resp}
+\end{figure}
 \item What is the sampling frequency of the input signal?
 
 \solution
@@ -582,7 +595,9 @@ What is type, order and  cutoff frequency of the above Butterworth filter?
 The given Butterworth filter is low pass with order 4 and cutoff frequency 4 kHz.
 \item
 Modifying the code with different input parameters and to get the best possible output.
+
+\solution
+A better filtering was found on setting the order of the filter to be 7.
 \end{enumerate}
 
 \end{document}
-

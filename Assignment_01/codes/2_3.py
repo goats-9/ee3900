@@ -8,7 +8,7 @@ input_signal,fs = sf.read('Sound_Noise.wav')
 sampl_freq=fs
 
 #order of the filter
-order=4   
+order=7 
 
 #cutoff frquency 4kHz
 cutoff_freq=4000.0  
