@@ -163,7 +163,7 @@ This manual provides a simple introduction to digital signal processing.
 \noindent Run the following commands (commands may change depending on Linux distro)
 \begin{lstlisting}
 $ sudo apt update && sudo apt upgrade
-$ sudo apt install libffi-dev libsndfile1 python3-scipy python3-numpy python3-matplotlib 
+$ sudo apt install libffi-dev libsndfile1 python3-scipy python3-pip python3-numpy python3-matplotlib 
 $ pip3 install cffi pysoundfile 
 \end{lstlisting}
 \section{Digital Filter}
@@ -323,7 +323,7 @@ Let
 H\brak{e^{\j \omega}} = H\brak{z = e^{\j \omega}}.
 \end{equation}
 Plot $\abs{H\brak{e^{\j \omega}}}$.  Comment.  $H(e^{\j \omega})$ is
-known as the {\em Discret Time Fourier Transform} (DTFT) of $x(n)$.
+known as the {\em Discrete Time Fourier Transform} (DTFT) of $x(n)$.
 
 \solution The following code plots Fig. \eqref{fig:H-w}.
 \begin{lstlisting}
@@ -472,7 +472,7 @@ Y(k) = X(k)H(k)
  \label{eq:inv-ft}
 \end{equation}
 
-\solution The following code plots Fig. \eqref{fig:y-n-dft}. Note that this is the same as $y(n)$ in Fig. \eqref{fig:xnyn}.
+\solution The following code plots Fig. \eqref{fig:y-n-dft} and computes $X(k)$ and $Y(k)$. Note that this is the same as $y(n)$ in Fig. \eqref{fig:xnyn}.
 
 \begin{lstlisting}
 $ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/6_3.py
@@ -557,7 +557,20 @@ in Problem \ref{prob:output} is executed through the following difference equati
 \end{equation}
 where the input signal is $x(n)$ and the output signal is $y(n)$ with initial values all 0. Replace
 \textbf{signal.filtfilt} with your own routine and verify.
+
+\solution
+The implementation is at
+\begin{lstlisting}
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/7_1.py
+\end{lstlisting}
+and can be run using
+\begin{lstlisting}
+$ python3 7_1.py
+\end{lstlisting}
 \item Repeat all the exercises in the previous sections for the above $a$ and $b$.
+
+\solution
+
 \item What is the sampling frequency of the input signal?
 
 \solution
