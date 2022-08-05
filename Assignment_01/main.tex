@@ -574,9 +574,13 @@ The filter frequency response is plotted at
 \begin{lstlisting}
 $ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/7_2_1.py
 \end{lstlisting}
-and can be generated using
+The impulse response function is plotted at
 \begin{lstlisting}
-$ python3 7_2_1.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/7_2_2.py
+\end{lstlisting}
+We see that $h(n)$ is bounded and convergent. Also, since 1 is not a pole of the transfer function, the system is stable. The codes can be run all at once by typing
+\begin{lstlisting}
+$ python3 7_2_*.py
 \end{lstlisting}
 
 \begin{figure}[!htb]
@@ -584,6 +588,13 @@ $ python3 7_2_1.py
 	\caption{Filter frequency response}
 	\label{fig:butter-resp}
 \end{figure}
+
+\begin{figure}[!htb]
+	\includegraphics[width=\columnwidth]{figs/7_2_2.png}
+	\caption{Plot of $h(n)$}
+	\label{fig:butter-imp}
+\end{figure}
+
 \item What is the sampling frequency of the input signal?
 
 \solution
