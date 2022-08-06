@@ -574,6 +574,10 @@ The filter frequency response is plotted at
 \begin{lstlisting}
 $ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/7_2_1.py
 \end{lstlisting}
+To plot the impulse response function $h(n)$, we rewrite $H(z)$ using partial fractions to take the inverse $z$-transform.
+\begin{align}
+	H(z) = \sum_{i}\frac{r_i}{1 - p_iz^{-1}} + \sum_{j}k_jz^{-j}
+\end{align}
 The impulse response function is plotted at
 \begin{lstlisting}
 $ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/7_2_2.py
