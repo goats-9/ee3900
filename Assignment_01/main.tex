@@ -105,7 +105,6 @@ columns=fullflexible
 \providecommand{\mean}[1]{E\left[ #1 \right]}
 \providecommand{\fourier}{\overset{\mathcal{F}}{ \rightleftharpoons}}
 \providecommand{\ztrans}{\overset{\mathcal{Z}}{ \rightleftharpoons}}
-
 %\providecommand{\hilbert}{\overset{\mathcal{H}}{ \rightleftharpoons}}
 \providecommand{\system}{\overset{\mathcal{H}}{ \longleftrightarrow}}
 	%\newcommand{\solution}[2]{\textbf{Solution:}{#1}}
@@ -216,11 +215,20 @@ y(n) = 0, n < 0
 \end{multline}
 Sketch $y(n)$.
 
-\solution The following code yields Fig. \eqref{fig:xnyn}.
+\solution The following C code calculates $y(n)$.
+\begin{lstlisting}
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/codes/3_2.c
+\end{lstlisting}
+Run it using
+\begin{lstlisting}
+$ gcc -lm -Wall -g -O2 3_2.c
+$ ./a.out
+\end{lstlisting}
+The following code plots Fig. \eqref{fig:xnyn}.
 \begin{lstlisting}
 $ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/codes/3_2.py
 \end{lstlisting}
-and execute it using
+Execute it using
 \begin{lstlisting}
 $ python3 3_2.py
 \end{lstlisting}
@@ -433,7 +441,23 @@ and executed using
 \begin{lstlisting}
 $ python3 5_5.py
 \end{lstlisting}
-
+We use Toeplitz matrices for convolution
+\begin{align}
+	\mtx{y} &= \mtx{x} \circledast \mtx{h}\\
+	\mtx{y} &= 
+	\begin{pmatrix}
+		h_1 & 0 & . & . & . & 0 \\
+		h_2 & h_1 & . & . & . & 0 \\
+		h_3 & h_2 & h_1 & . & . & 0 \\
+		. & . & . & . & . & . \\
+		0 & . & . & h_3 & h_2 & h_1 \\
+		0 & . & . & . & h_2 & h_1 \\
+		0 & . & . & . & 0 & h_1
+	\end{pmatrix}
+	\begin{pmatrix}
+		x_1 \\ x_2 \\ \vdots \\ x_n
+	\end{pmatrix}
+\end{align}
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=\columnwidth]{figs/5_5.png}

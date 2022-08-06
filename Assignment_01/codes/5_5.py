@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.linalg import convolution_matrix as cm
 #If using termux
 #import subprocess
 #import shlex
@@ -14,15 +15,10 @@ h = hn1+hn2
 nh=len(h)
 x=np.array([1.0,2.0,3.0,4.0,2.0,1.0])
 nx = len(x)
-
-y = np.zeros(nx+nh-1)
-
-for k in range(0,nx+nh-1):
-	for n in range(0,nx):
-		if k-n >= 0 and k-n < nh:
-			y[k]+=x[n]*h[k-n]
-
+th = cm(h,nx,mode='full')
+y = th@x
 print(y)
+
 #plots
 plt.stem(range(0,nx+nh-1),y)
 plt.xlabel('$n$')
