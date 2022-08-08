@@ -114,15 +114,14 @@ columns=fullflexible
 %\numberwithin{equation}{subsection}
 %\numberwithin{problem}{subsection}
 %\numberwithin{definition}{subsection}
-\makeatletter
-\@addtoreset{figure}{problem}
-\makeatother
 
-\let\StandardTheFigure\thefigure
+
 %\renewcommand{\thefigure}{\theproblem.\arabic{figure}}
-\renewcommand{\thefigure}{\theproblem}
-
-
+%\renewcommand{\thefigure}{\theproblem}
+\renewcommand{\thefigure}{\arabic{section}.\arabic{figure}}
+\makeatletter
+\@addtoreset{figure}{section}
+\makeatother
 %\numberwithin{figure}{subsection}
 
 \def\putbox#1#2#3{\makebox[0in][l]{\makebox[#1][l]{}\raisebox{\baselineskip}[0in][0in]{\raisebox{#2}[0in][0in]{#3}}}}
@@ -147,8 +146,8 @@ columns=fullflexible
 %\renewcommand{\thefigure}{\thesection.\theenumi}
 %\renewcommand{\thetable}{\thesection.\theenumi}
 
-\renewcommand{\thefigure}{\theenumi}
-\renewcommand{\thetable}{\theenumi}
+%\renewcommand{\thefigure}{\theenumi}
+%\renewcommand{\thetable}{\theenumi}
 
 %\renewcommand{\theequation}{\thesection}
 
@@ -399,8 +398,13 @@ $ python3 5_2.py
 	\caption{$h(n)$ as the inverse of $H(z)$}
 	\label{fig:h-n}
 \end{figure}
-$h(n)$ is bounded and convergent.
-
+We see that $h(n)$ is bounded. For large $n$, we see that 
+\begin{align}
+	h(n) &= \brak{-\frac{1}{2}}^n + \brak{-\frac{1}{2}}^{n - 2} \\
+		 &= \brak{-\frac{1}{2}}^{n}\brak{4 + 1} = 5\brak{-\frac{1}{2}}^n \\
+		 &\implies \left|\frac{h(n + 1)}{h(n)}\right| = \frac{1}{2}
+\end{align}
+and therefore, $\lim_{n \to \infty}\left|\frac{h(n + 1)}{h(n)}\right| = \frac{1}{2} < 1$. Hence, we see that $h(n)$ converges.  
 \item The system with $h(n)$ is defined to be stable if
 \begin{equation}
 \sum_{n=-\infty}^{\infty}h(n) < \infty
@@ -413,7 +417,14 @@ Note that
 	\sum_{n = -\infty}^{\infty}h\brak{n} &= \sum_{n = -\infty}^{\infty}\brak{-\frac{1}{2}}^nu\brak{n} + \brak{-\frac{1}{2}}^{n - 2}u\brak{n - 2} \\
 										 &= 2\brak{\frac{1}{1 + \frac{1}{2}}} = \frac{4}{3}
 \end{align}
-Thus, the given system is stable.
+Thus, the given system is stable. The limit is verified at
+\begin{lstlisting}
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/5_3.py
+\end{lstlisting}
+and the code can be run using
+\begin{lstlisting}
+$ python3 5_3.py
+\end{lstlisting}
 
 \item 
 Compute and sketch $h(n)$ using 
@@ -578,7 +589,22 @@ i.e. $W_{jk} = \omega^{jk}$, $0 \leq j, k < N$. Hence, we can write any DFT equa
 \begin{align}
 	\mtx{Y} = \mtx{H}\cdot\mtx{X} = \brak{\mtx{W}\mtx{h}}\cdot\brak{\mtx{W}\mtx{x}}
 \end{align}
+The plot of $y(n)$ using the DFT matrix in Fig. \eqref{fig:yn-mtx} is the same as $y(n)$ in Fig. \eqref{fig:xnyn}. Download the code using
+\begin{lstlisting}
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/6_5.py
+\end{lstlisting}
+and run it using
+\begin{lstlisting}
+$ python3 6_5.py 
+\end{lstlisting}
 \end{enumerate}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=\columnwidth]{figs/6_5.png}
+	\caption{$y(n)$ using the DFT matrix}
+	\label{fig:yn-mtx}
+\end{figure}
 
 \section{Exercises}
 \noindent Answer the following questions by looking at the python code in Problem \ref{prob:output}.
