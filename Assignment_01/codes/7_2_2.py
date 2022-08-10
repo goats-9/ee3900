@@ -1,8 +1,11 @@
-import soundfile as sf
+import numpy as np
 import matplotlib.pyplot as plt
 from scipy import signal
-from scipy import vectorize as vec
-import numpy as np
+import soundfile as sf
+#if using termux
+#import subprocess
+#import shlex
+#end if
 
 #read .wav file 
 input_signal,fs = sf.read('Sound_Noise.wav') 
@@ -11,7 +14,7 @@ input_signal,fs = sf.read('Sound_Noise.wav')
 sampl_freq=fs
 
 #order of the filter
-order=7 
+order=4   
 
 #cutoff frquency 4kHz
 cutoff_freq=4000.0  
@@ -22,23 +25,24 @@ Wn=2*cutoff_freq/sampl_freq
 # b and a are numerator and denominator polynomials respectively
 b, a = signal.butter(order, Wn, 'low') 
 
-# get partial fraction expansion
-r, p, k = signal.residuez(b, a)
+#DTFT
+def H(z):
+	num = np.polyval(b,z**(-1))
+	den = np.polyval(a,z**(-1))
+	H = num/den
+	return H
+		
+#Input and Output
+omega = np.linspace(0,np.pi,100)
 
-#number of terms of the impulse response
-sz = 50
-sz_lin = np.arange(sz)
+#subplots
+plt.plot(omega, abs(H(np.exp(1j*omega))))
+plt.xlabel('$\omega$')
+plt.ylabel('$|H(e^{\jmath\omega})| $')
+plt.grid()# minor
 
-def rp(x):
-    return r@(p**x).T
-
-rp_vec = vec(rp, otypes=['double'])
-
-h1 = rp_vec(sz_lin)
-k_add = np.pad(k, (0, sz - len(k)), 'constant', constant_values=(0,0))
-h = h1 + k_add
-plt.stem(sz_lin, h)
-plt.xlabel('n')
-plt.ylabel('h(n)')
-plt.grid()
+#if using termux
 plt.savefig('../figs/7_2_2.png')
+#subprocess.run(shlex.split("termux-open ../figs/dtft.pdf"))
+#else
+#plt.show()

@@ -336,7 +336,7 @@ Let
 H\brak{e^{\j \omega}} = H\brak{z = e^{\j \omega}}.
 \end{equation}
 Plot $\abs{H\brak{e^{\j\omega}}}$.  Comment.  $H(e^{\j \omega})$ is
-known as the {\em Discrete Time Fourier Transform} (DTFT) of $x(n)$.
+known as the {\em Discrete Time Fourier Transform} (DTFT) of $h(n)$.
 
 \solution The following code plots Fig. \eqref{fig:H-w}.
 \begin{lstlisting}
@@ -361,6 +361,15 @@ and so its fundamental period is $2\pi$.
 	\caption{Plot of $\left|H\brak{e^{\j\omega}}\right|$ against $\omega$}
 	\label{fig:H-w}
 \end{figure}
+
+\item Express $h(n)$ in terms of $H(e^{\j\omega})$.
+
+\solution Using the Inverse Discrete Time Fourier Transform, we get
+\begin{align}
+	h(n) &= \int_{-\pi}^{\pi}H(e^{\j\omega})e^{\j\omega n}d\omega \\
+		 &= \int_{-\pi}^{\pi}\frac{1 + e^{-2\j\omega}}{1 + \frac{1}{2}e^{-\j\omega}}e^{\j\omega n}d\omega
+	\label{eq:idtft}
+\end{align}
 \end{enumerate}
 
 \section{Impulse Response}
@@ -414,7 +423,8 @@ Is the system defined by \eqref{eq:iir_filter} stable for the impulse response i
 \solution
 Note that
 \begin{align}
-	\sum_{n = -\infty}^{\infty}h\brak{n} &= \sum_{n = -\infty}^{\infty}\brak{-\frac{1}{2}}^nu\brak{n} + \brak{-\frac{1}{2}}^{n - 2}u\brak{n - 2} \\
+	\sum_{n = -\infty}^{\infty}h\brak{n} &= \sum_{n = -\infty}^{\infty}
+	\brak{-\frac{1}{2}}^nu\brak{n} + \brak{-\frac{1}{2}}^{n - 2}u\brak{n - 2} \\
 										 &= 2\brak{\frac{1}{1 + \frac{1}{2}}} = \frac{4}{3}
 \end{align}
 Thus, the given system is stable. The limit is verified at
@@ -434,7 +444,8 @@ h(n) + \frac{1}{2}h(n-1) = \delta(n) + \delta(n-2),
 \end{equation}
 This is the definition of $h(n)$.
 
-\solution The following code plots Fig. \eqref{fig:h-n-inv}. Note that this is the same as Fig. \eqref{fig:h-n}.
+\solution The following code plots Fig. \eqref{fig:h-n-inv}. Note that this is
+the same as Fig. \eqref{fig:h-n}.
 \begin{lstlisting}
 $ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/5_4.py
 \end{lstlisting}
@@ -458,7 +469,8 @@ y(n) = x(n)*h(n) = \sum_{k=-\infty}^{\infty}x(k)h(n-k)
 Comment. The operation in \eqref{eq:convolution} is known as
 {\em convolution}.
 
-\solution The following code plots Fig. \eqref{fig:y-n-conv}. Note that this is the same as $y(n)$ in  Fig. \eqref{fig:xnyn}.
+\solution The following code plots Fig. \eqref{fig:y-n-conv}. Note that this is
+the same as $y(n)$ in  Fig. \eqref{fig:xnyn}.
 \begin{lstlisting}
 $ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/5_5.py
 \end{lstlisting}
@@ -517,11 +529,12 @@ Y(k) = X(k)H(k)
 \end{equation}
 \item Compute
 \begin{equation}
- y\brak{n}={\frac {1}{N}}\sum _{k=0}^{N-1}Y\brak{k}\cdot e^{\j 2\pi kn/N},\quad n = 0,1,\dots, N-1
- \label{eq:inv-ft}
+y\brak{n}={\frac {1}{N}}\sum _{k=0}^{N-1}Y\brak{k}\cdot e^{\j 2\pi kn/N},\quad n = 0,1,\dots, N-1
+\label{eq:inv-ft}
 \end{equation}
 
-\solution The following code plots Fig. \eqref{fig:y-n-dft} and computes $X(k)$ and $Y(k)$. Note that this is the same as $y(n)$ in Fig. \eqref{fig:xnyn}.
+\solution The following code plots Fig. \eqref{fig:y-n-dft} and computes $X(k)$
+and $Y(k)$. Note that this is the same as $y(n)$ in Fig. \eqref{fig:xnyn}.
 
 \begin{lstlisting}
 $ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/6_3.py
@@ -582,14 +595,17 @@ i.e. $W_{jk} = \omega^{jk}$, $0 \leq j, k < N$. Hence, we can write any DFT equa
 \end{align}
 \noindent Using \eqref{eq:inv-ft}, the inverse Fourier Transform is given by
 \begin{align}
-	\mtx{x} = \mathcal{F}^{-1}\brak{\mtx{X}} = \mtx{W}^{-1}\mtx{X} &= \frac{1}{N}\mtx{W^{H}}\mtx{X} = \frac{1}{N}\mtx{X}\mtx{W^{H}} \\ 
+	\mtx{x} = \mathcal{F}^{-1}\brak{\mtx{X}} = \mtx{W}^{-1}\mtx{X} &= 
+	\frac{1}{N}\mtx{W^{H}}\mtx{X} = \frac{1}{N}\mtx{X}\mtx{W^{H}} \\ 
 	\implies \mtx{W}^{-1} &= \frac{1}{N}\mtx{W^{H}}
 \end{align}
-\noindent where $H$ denotes hermitian operator. We can rewrite \eqref{eq:fp} using the element-wise multiplication operator as
+\noindent where $H$ denotes hermitian operator. We can rewrite \eqref{eq:fp} using the
+element-wise multiplication operator as
 \begin{align}
 	\mtx{Y} = \mtx{H}\cdot\mtx{X} = \brak{\mtx{W}\mtx{h}}\cdot\brak{\mtx{W}\mtx{x}}
 \end{align}
-The plot of $y(n)$ using the DFT matrix in Fig. \eqref{fig:yn-mtx} is the same as $y(n)$ in Fig. \eqref{fig:xnyn}. Download the code using
+The plot of $y(n)$ using the DFT matrix in Fig. \eqref{fig:yn-mtx} is the same as $y(n)$ in 
+Fig. \eqref{fig:xnyn}. Download the code using
 \begin{lstlisting}
 $ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/6_5.py
 \end{lstlisting}
@@ -634,33 +650,64 @@ $ python3 7_1.py
 \item Repeat all the exercises in the previous sections for the above $a$ and $b$.
 
 \solution
-The filter frequency response is plotted at
+From \eqref{eq:iir_filter_gen}, we see that the transfer function can be written as follows
+\begin{align}
+	H(z) &= \frac{\sum_{k = 0}^{N}b_kz^{-k}}{\sum_{k = 0}^{M}a_kz^{-k}} \\
+		 &= \sum_{i}\frac{r_i}{1 - p_iz^{-1}} + \sum_{j}k_jz^{-j}
+	\label{eq:trans-func}
+\end{align}
+where $r_i$, $p_i$, are called residues and poles respectively of the partial 
+fraction expansion of $H(z)$. $k_i$ are the coefficients of the direct polynomial 
+terms that might be left over. We can now take the inverse $z$-transform of
+\eqref{eq:trans-func} and get using \eqref{eq:anun},
+\begin{align}
+	h(n) = \sum_{i}r_ip_i^nu(n) + k_n
+	\label{eq:h-n-expr}
+\end{align}
+The values $r_i$, $p_i$, $k_i$ and thus the impulse response function are computed and plotted at
 \begin{lstlisting}
 $ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/7_2_1.py
 \end{lstlisting}
-To plot the impulse response function $h(n)$, we rewrite $H(z)$ using partial fractions to take the inverse $z$-transform.
-\begin{align}
-	H(z) = \sum_{i}\frac{r_i}{1 - p_iz^{-1}} + \sum_{j}k_jz^{-j}
-\end{align}
-The impulse response function is plotted at
+The filter frequency response is plotted at
 \begin{lstlisting}
 $ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/7_2_2.py
 \end{lstlisting}
-We see that $h(n)$ is bounded and convergent. Also, since 1 is not a pole of the transfer function, the system is stable. The codes can be run all at once by typing
+Observe that for a series $t_n = r^n$, $\frac{t_{n + 1}}{t_n} = r$.
+By the ratio test, $t_n$ converges if $|r| < 1$. From the Python code, we
+observe that $|p_i| < 1$ and so, as $h(n)$ is the sum of convergent series,
+we see that $h(n)$ converges. From Fig. \eqref{fig:butter-imp}, it is clear
+that $h(n)$ is bounded. From \eqref{eq:z_trans},
+\begin{align}
+	\sum_{n = 0}^{\infty}h(n) = H(1) 
+\end{align}
+Since 1 is not a pole of the transfer function, the system is stable. From
+Fig. \eqref{fig:butter-imp}, $h(n)$ is negligible after $n \geq 64$, and we
+can apply a 64-bit FFT to get y(n). The following code uses the DFT matrix
+to generate $y(n)$ in Fig. \eqref{fig:butter-out}.
+\begin{lstlisting}
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/7_2_3.py
+\end{lstlisting}
+The codes can be run all at once by typing
 \begin{lstlisting}
 $ python3 7_2_*.py
 \end{lstlisting}
 
 \begin{figure}[!htb]
 	\includegraphics[width=\columnwidth]{figs/7_2_1.png}
+	\caption{Plot of $h(n)$}
+	\label{fig:butter-imp}
+\end{figure}
+
+\begin{figure}[!htb]
+	\includegraphics[width=\columnwidth]{figs/7_2_2.png}
 	\caption{Filter frequency response}
 	\label{fig:butter-resp}
 \end{figure}
 
 \begin{figure}[!htb]
-	\includegraphics[width=\columnwidth]{figs/7_2_2.png}
-	\caption{Plot of $h(n)$}
-	\label{fig:butter-imp}
+	\includegraphics[width=\columnwidth]{figs/7_2_3.png}
+	\caption{Plot of $y(n)$}
+	\label{fig:butter-out}
 \end{figure}
 
 \item What is the sampling frequency of the input signal?

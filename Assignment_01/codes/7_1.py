@@ -36,6 +36,7 @@ output_signal = signal.filtfilt(b, a, input_signal)
 #output_signal1 = signal.lfilter(b, a, input_signal)
 os1 = myfiltfilt(b, a, input_signal)
 x_plt = np.arange(len(input_signal))
+#Verify outputs by plotting
 plt.plot(x_plt[:100], output_signal[:100], 'b.')
 plt.plot(x_plt[:100], os1[:100], 'r.')
 plt.grid()
