@@ -25,7 +25,6 @@ output_signal = signal.filtfilt(b, a, input_signal)
 
 # get partial fraction expansion
 r, p, k = signal.residuez(b, a)
-
 #number of terms of the impulse response
 sz = 64
 sz_lin = np.arange(sz)
