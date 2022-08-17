@@ -727,9 +727,9 @@ observe that $|p_i| < 1$ and so, as $h(n)$ is the sum of convergent series,
 we see that $h(n)$ converges. From Fig. \eqref{fig:butter-imp}, it is clear
 that $h(n)$ is bounded. From \eqref{eq:z_trans},
 \begin{align}
-	\sum_{n = 0}^{\infty}h(n) = H(1) = 1
+	\sum_{n = 0}^{\infty}h(n) = H(1) = 1 < \infty
 \end{align}
-Since 1 is not a pole of the transfer function, the system is stable. From
+Therefore, the system is stable. From
 Fig. \eqref{fig:butter-imp}, $h(n)$ is negligible after $n \geq 64$, and we
 can apply a 64-bit FFT to get y(n). The following code uses the DFT matrix
 to generate $y(n)$ in Fig. \eqref{fig:butter-out}.
