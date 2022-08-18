@@ -36,6 +36,7 @@
 %\usepackage{iithtlc}
 %\usepackage[framemethod=tikz]{mdframed}
 \usepackage{listings}
+\usepackage{polynom}
 
 %\usepackage{wasysym}
 %\newcounter{MYtempeqncnt}
@@ -54,6 +55,48 @@
 
 % correct bad hyphenation here
 \hyphenation{op-tical net-works semi-conduc-tor}
+
+\makeatletter
+\def\pld@CF@loop#1+{%
+    \ifx\relax#1\else
+        \begingroup
+          \pld@AccuSetX11%
+          \def\pld@frac{{}{}}\let\pld@symbols\@empty\let\pld@vars\@empty
+          \pld@false
+          #1%
+          \let\pld@temp\@empty
+          \pld@AccuIfOne{}{\pld@AccuGet\pld@temp
+                            \edef\pld@temp{\noexpand\pld@R\pld@temp}}%
+           \pld@if \pld@Extend\pld@temp{\expandafter\pld@F\pld@frac}\fi
+           \expandafter\pld@CF@loop@\pld@symbols\relax\@empty
+           \expandafter\pld@CF@loop@\pld@vars\relax\@empty
+           \ifx\@empty\pld@temp
+               \def\pld@temp{\pld@R11}%
+           \fi
+          \global\let\@gtempa\pld@temp
+        \endgroup
+        \ifx\@empty\@gtempa\else
+            \pld@ExtendPoly\pld@tempoly\@gtempa
+        \fi
+        \expandafter\pld@CF@loop
+    \fi}
+\def\pld@CMAddToTempoly{%
+    \pld@AccuGet\pld@temp\edef\pld@temp{\noexpand\pld@R\pld@temp}%
+    \pld@CondenseMonomials\pld@false\pld@symbols
+    \ifx\pld@symbols\@empty \else
+        \pld@ExtendPoly\pld@temp\pld@symbols
+    \fi
+    \ifx\pld@temp\@empty \else
+        \pld@if
+            \expandafter\pld@IfSum\expandafter{\pld@temp}%
+                {\expandafter\def\expandafter\pld@temp\expandafter
+                    {\expandafter\pld@F\expandafter{\pld@temp}{}}}%
+                {}%
+        \fi
+        \pld@ExtendPoly\pld@tempoly\pld@temp
+        \pld@Extend\pld@tempoly{\pld@monom}%
+    \fi}
+\makeatother
 
 \lstset{
 language=Python,
@@ -354,6 +397,12 @@ Using \eqref{eq:freq_resp}, we observe that $\left|H\brak{e^{\j\omega}}\right|$ 
 									  &= \sqrt{\frac{2\brak{2\cos^2{\omega}}}{\frac{5}{4} + \cos{\omega}}} \\
 									  &= \frac{4|\cos{\omega}|}{\sqrt{5 + 4\cos{\omega}}}
 \end{align}
+Thus,
+\begin{align}
+	\left|H\brak{e^{\j\brak{\omega + 2\pi}}}\right| &= \frac{4|\cos\brak{\omega + 2\pi}|}{\sqrt{5 + 4\cos\brak{\omega + 2\pi}}} \\
+											   &= \frac{4|\cos{\omega}|}{\sqrt{5 + 4\cos{\omega}}} \\
+											   &= \left|H\brak{e^{\j\omega}}\right|	
+\end{align}
 and so its fundamental period is $2\pi$.
 \begin{figure}[!ht]
 	\centering
@@ -393,6 +442,27 @@ which is known as the Inverse Discrete Fourier Transform. Thus,
 
 \section{Impulse Response}
 \begin{enumerate}[label=\thesection.\arabic*]
+
+\item Using long division, compute $h(n)$ for $n < 5$ from $H(z)$.
+
+\solution We substitute $x := z^{-1}$, and write
+
+\polylongdiv{1 + x^2}{1 + \frac{1}{2}x}
+
+So,
+\begin{align}
+	H(z) &= -4 + 2z^{-1} + \frac{5}{1 + \frac{1}{2}z^{-1}} \\
+		 &= -4 + 2z^{-1} + 5\sum_{n = 0}^{\infty}\brak{-\frac{1}{2}}^nz^{-n} \\
+		 &= 1 - \frac{1}{2}z^{-1} + 5\sum_{n = 2}^{\infty}\brak{-\frac{1}{2}}^nz^{-n} \\
+		 &= \sum_{n = 0}^{\infty}\brak{-\frac{1}{2}}^nz^{-n} + 4\sum_{n = 2}^{\infty}\brak{-\frac{1}{2}}^nz^{-n} \\
+		 &= \sum_{n = -\infty}^{\infty}u(n)\brak{-\frac{1}{2}}^nz^{-n} + \nonumber \\
+		 &\sum_{n = -\infty}^{\infty}u(n - 2)\brak{-\frac{1}{2}}^{n - 2}z^{-n}
+\end{align}
+
+Therefore, from \eqref{eq:z_trans}, 
+\begin{align}
+	h(n) = \brak{-\frac{1}{2}}^{n}u(n) + \brak{-\frac{1}{2}}^{n-2}u(n-2)
+\end{align}
 
 \item \label{prob:impulse_resp}
 Find an expression for $h(n)$ using $H(z)$, given that 
@@ -670,6 +740,16 @@ $ python3 7_1.py
 \item Repeat all the exercises in the previous sections for the above $a$ and $b$.
 
 \solution
+%\begin{align}
+%	\mtx{a} =
+%	\begin{pmatrix}
+%		4.44 \\ 8.78 \\ -9.93 \\ 6.90 \\ -2.93 \\ 0.70 \\ -0.07
+%	\end{pmatrix}
+%	\mtx{b} = 
+%	\begin{pmatrix}
+%		5.02 \times 10^{-5} \\ 3.52 \times 10^{-4} \\ 1.05 \times 10^{-3} \\ 1.76 \times 10^{-3} \\ 1.76 \times 10^{-3} \\ 1.05 \times 10^{-3} \\ 3.52 \times 10^{-4} \\ 5.02 \times 10^{-5} 
+%	\end{pmatrix}
+%\end{align}
 For the given values, the difference equation is
 \begin{align}
 	&y(n) - \brak{4.44}y(n - 1) + \brak{8.78}y(n - 2) \nonumber \\
@@ -692,7 +772,7 @@ fraction expansion of $H(z)$. $k(i)$ are the coefficients of the direct polynomi
 terms that might be left over. We can now take the inverse $z$-transform of
 \eqref{eq:trans-func} and get using \eqref{eq:anun},
 \begin{align}
-	h(n) = \sum_{i}r(i)[p(i)]^nu(n) + k(n)
+	h(n) &= \sum_{i}r(i)[p(i)]^nu(n) + \sum_{j}k(j)\delta(n - j)
 	\label{eq:h-n-expr}
 \end{align}
 Substituting the values,
@@ -703,15 +783,8 @@ Substituting the values,
 	&+ \brak{-0.53+0.08\j}\brak{0.63+0.32\j}^n \nonumber \\
 	&+ \brak{-0.53-0.08\j}\brak{0.63-0.32\j}^n \nonumber \\
 	&+ \brak{0.20+0.004\j}\brak{0.75+0.47\j}^n \nonumber \\
-	&+ \brak{0.20-0.004\j}\brak{0.75-0.47\j}^n]u(n) + k(n)
-\end{align}
-where
-\begin{align}
-	k(n) = 
-	\begin{cases} 
-		-6.81 \times 10^{-4} & n = 0 \\
-		0 & \textrm{otherwise}
-	\end{cases}
+	&+ \brak{0.20-0.004\j}\brak{0.75-0.47\j}^n]u(n) \nonumber \\
+	&+ \brak{-6.81 \times 10^{-4}}\delta(n)
 \end{align}
 The values $r(i)$, $p(i)$, $k(i)$ and thus the impulse response function are computed and plotted at
 \begin{lstlisting}
@@ -722,8 +795,8 @@ The filter frequency response is plotted at
 $ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/7_2_2.py
 \end{lstlisting}
 Observe that for a series $t_n = r^n$, $\frac{t_{n + 1}}{t_n} = r$.
-By the ratio test, $t_n$ converges if $|r| < 1$. From the Python code, we
-observe that $|p_i| < 1$ and so, as $h(n)$ is the sum of convergent series,
+By the ratio test, $t_n$ converges if $|r| < 1$. We note that
+observe that $|p(i)| < 1$ and so, as $h(n)$ is the sum of convergent series,
 we see that $h(n)$ converges. From Fig. \eqref{fig:butter-imp}, it is clear
 that $h(n)$ is bounded. From \eqref{eq:z_trans},
 \begin{align}
