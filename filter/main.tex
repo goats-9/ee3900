@@ -625,11 +625,11 @@ y\brak{n}={\frac {1}{N}}\sum _{k=0}^{N-1}Y\brak{k}\cdot e^{\j 2\pi kn/N},\quad n
 
 \solution The following code plots Fig. \eqref{fig:y-n-dft} and computes $X(k)$
 and $Y(k)$. Note that this is the same as $y(n)$ in Fig. \eqref{fig:xnyn}.
-
+Download the code using
 \begin{lstlisting}
 $ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/6_3.py
 \end{lstlisting}
-and executed using
+and execute it using
 \begin{lstlisting}
 $ python3 6_3.py
 \end{lstlisting}
@@ -651,7 +651,7 @@ and execute it using
 \begin{lstlisting}
 $ python3 6_4.py
 \end{lstlisting}
-Observe that Fig. \eqref{fig:y-n-fft} is the same as $y(n)$ in Fig. \eqref{fig:xnyn}.
+The values of $y(n)$ using all the three methods have been plotted on one stem plot for convenience. Note that there is very little difference in the values of $y(n)$.
 
 \begin{figure}
 	\centering
@@ -695,7 +695,7 @@ element-wise multiplication operator as
 	\mtx{Y} = \mtx{H}\cdot\mtx{X} = \brak{\mtx{W}\mtx{h}}\cdot\brak{\mtx{W}\mtx{x}}
 \end{align}
 The plot of $y(n)$ using the DFT matrix in Fig. \eqref{fig:yn-mtx} is the same as $y(n)$ in 
-Fig. \eqref{fig:xnyn}. Download the code using
+Fig. \eqref{fig:xnyn}.
 \begin{lstlisting}
 $ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/6_5.py
 \end{lstlisting}
@@ -703,7 +703,6 @@ and run it using
 \begin{lstlisting}
 $ python3 6_5.py 
 \end{lstlisting}
-\end{enumerate}
 
 \begin{figure}[!htb]
 	\centering
@@ -711,6 +710,24 @@ $ python3 6_5.py
 	\caption{$y(n)$ using the DFT matrix}
 	\label{fig:yn-mtx}
 \end{figure}
+
+\item Implement your own FFT and IFFT routines and verify your routine by plotting $y(n)$.
+
+\solution The code can be downloaded using
+\begin{lstlisting}
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/6_6.py
+\end{lstlisting}
+and can be run using 
+\begin{lstlisting}
+$ python3 6_6.py
+\end{lstlisting}
+The plot is shown in Fig. \eqref{fig:yn-own}
+\begin{figure}
+	\includegraphics[width=\columnwidth]{figs/6_5.py}
+	\caption{$y(n)$ using own implementation of FFT and IFFT}
+	\label{fig:yn-own}
+\end{figure}
+\end{enumerate}
 
 \section{Exercises}
 \noindent Answer the following questions by looking at the python code in Problem \ref{prob:output}.
@@ -841,7 +858,7 @@ What is type, order and  cutoff frequency of the above Butterworth filter?
 \solution
 The given Butterworth filter is low pass with order 4 and cutoff frequency 4 kHz.
 \item
-Modifying the code with different input parameters and to get the best possible output.
+Modify the code with different input parameters and get the best possible output.
 
 \solution
 A better filtering was found on setting the order of the filter to be 7.
