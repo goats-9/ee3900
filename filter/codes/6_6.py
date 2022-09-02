@@ -83,7 +83,7 @@ plt.grid()# minor
 plt.legend(['From IDFT', 'From difference equation', 'From IFFT', 'From own implementation'])
 
 #If using termux
-plt.savefig('../figs/6_5.png')
+plt.savefig('../figs/6_6.png')
 #subprocess.run(shlex.split("termux-open ../figs/yndft.pdf"))
 #else
 #plt.show()

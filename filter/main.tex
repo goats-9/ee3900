@@ -214,7 +214,7 @@ $ pip3 install cffi pysoundfile
 \label{prob:input}
 Download the sound file using
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/Sound_Noise.wav
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/Sound_Noise.wav
 \end{lstlisting}
 \item
 \label{prob:spectrogram}
@@ -229,7 +229,7 @@ Write the python code for removal of out of band noise and execute the code.
 \solution
 Download the source code using
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/2_3.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/2_3.py
 \end{lstlisting}
 and execute it using
 \begin{lstlisting}
@@ -383,7 +383,7 @@ known as the {\em Discrete Time Fourier Transform} (DTFT) of $h(n)$.
 
 \solution The following code plots Fig. \eqref{fig:H-w}.
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/4_5.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/4_5.py
 \end{lstlisting}
 The figure can be generated using
 \begin{lstlisting}
@@ -484,7 +484,7 @@ using \eqref{eq:anun} and \eqref{eq:z_trans_shift}.
 
 \solution The following code plots Fig. \eqref{fig:h-n}.
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/5_2.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/5_2.py
 \end{lstlisting}
 and execute it using
 \begin{lstlisting}
@@ -519,7 +519,7 @@ Note that
 \end{align}
 Thus, the given system is stable. The limit is verified at
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/5_3.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/5_3.py
 \end{lstlisting}
 and the code can be run using
 \begin{lstlisting}
@@ -537,7 +537,7 @@ This is the definition of $h(n)$.
 \solution The following code plots Fig. \eqref{fig:h-n-inv}. Note that this is
 the same as Fig. \eqref{fig:h-n}.
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/5_4.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/5_4.py
 \end{lstlisting}
 and executed using
 \begin{lstlisting}
@@ -562,7 +562,7 @@ Comment. The operation in \eqref{eq:convolution} is known as
 \solution The following code plots Fig. \eqref{fig:y-n-conv}. Note that this is
 the same as $y(n)$ in  Fig. \eqref{fig:xnyn}.
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/5_5.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/5_5.py
 \end{lstlisting}
 and executed using
 \begin{lstlisting}
@@ -627,7 +627,7 @@ y\brak{n}={\frac {1}{N}}\sum _{k=0}^{N-1}Y\brak{k}\cdot e^{\j 2\pi kn/N},\quad n
 and $Y(k)$. Note that this is the same as $y(n)$ in Fig. \eqref{fig:xnyn}.
 Download the code using
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/6_3.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/6_3.py
 \end{lstlisting}
 and execute it using
 \begin{lstlisting}
@@ -645,7 +645,7 @@ IFFT.
 
 \solution Download the code from
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/6_4.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/6_4.py
 \end{lstlisting}
 and execute it using
 \begin{lstlisting}
@@ -697,7 +697,7 @@ element-wise multiplication operator as
 The plot of $y(n)$ using the DFT matrix in Fig. \eqref{fig:yn-mtx} is the same as $y(n)$ in 
 Fig. \eqref{fig:xnyn}.
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/6_5.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/6_5.py
 \end{lstlisting}
 and run it using
 \begin{lstlisting}
@@ -715,7 +715,7 @@ $ python3 6_5.py
 
 \solution The code can be downloaded using
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/6_6.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/6_6.py
 \end{lstlisting}
 and can be run using 
 \begin{lstlisting}
@@ -723,9 +723,42 @@ $ python3 6_6.py
 \end{lstlisting}
 The plot is shown in Fig. \eqref{fig:yn-own}
 \begin{figure}
-	\includegraphics[width=\columnwidth]{figs/6_5.py}
+	\includegraphics[width=\columnwidth]{figs/6_5.png}
 	\caption{$y(n)$ using own implementation of FFT and IFFT}
 	\label{fig:yn-own}
+\end{figure}
+
+\item Find the time complexities of computing $y(n)$ using FFT/IFFT and convolution.
+
+\solution The C code for finding the running times of these three algorithms can be downloaded from
+\begin{lstlisting}
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/6_7.c
+\end{lstlisting}
+The C code is compiled and run using
+\begin{lstlisting}
+$ gcc -lm -O2 -Wall -g 6_7.c
+$ ./a.out
+\end{lstlisting}
+This code generates three text files that are used to plot the runtimes of the algorithms in the following Python codes
+\begin{lstlisting}
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/6_7_1.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/6_7_2.py
+\end{lstlisting}
+Figs. \eqref{fig:nlgn} and \eqref{fig:nsq} are generated by executing the codes.
+\begin{lstlisting}
+$ python3 6_7_*.py 
+\end{lstlisting}
+
+\begin{figure}[!htb]
+	\includegraphics[width=\columnwidth]{figs/6_7_1.png}
+	\caption{The worst-case complexity of FFT/IFFT is $O(n\log{n})$}
+	\label{fig:nlgn}
+\end{figure}
+
+\begin{figure}[!htb]
+	\includegraphics[width=\columnwidth]{figs/6_7_2.png}
+	\caption{The worst case complexity of convolution is $O(n^2)$}
+	\label{fig:nsq}
 \end{figure}
 \end{enumerate}
 
@@ -748,7 +781,7 @@ where the input signal is $x(n)$ and the output signal is $y(n)$ with initial va
 \solution
 The implementation is at
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/7_1.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/7_1.py
 \end{lstlisting}
 and can be run using
 \begin{lstlisting}
@@ -805,11 +838,11 @@ Substituting the values,
 \end{align}
 The values $r(i)$, $p(i)$, $k(i)$ and thus the impulse response function are computed and plotted at
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/7_2_1.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/7_2_1.py
 \end{lstlisting}
 The filter frequency response is plotted at
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/7_2_2.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/7_2_2.py
 \end{lstlisting}
 Observe that for a series $t_n = r^n$, $\frac{t_{n + 1}}{t_n} = r$.
 By the ratio test, $t_n$ converges if $|r| < 1$. We observe that for all $i$, 
@@ -823,7 +856,7 @@ Fig. \eqref{fig:butter-imp}, $h(n)$ is negligible after $n \geq 64$, and we
 can apply a 64-bit FFT to get y(n). The following code uses the DFT matrix
 to generate $y(n)$ in Fig. \eqref{fig:butter-out}.
 \begin{lstlisting}
-$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/7_2_3.py
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/filter/codes/7_2_3.py
 \end{lstlisting}
 The codes can be run all at once by typing
 \begin{lstlisting}
