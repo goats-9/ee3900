@@ -4,7 +4,7 @@
 #include <complex.h>
 #include <time.h>
 
-complex *myfft(int n, complex *a) { 
+complex *myfft(int n, complex *a) {
 	if (n == 1) return a;
 	complex *g = (complex *)malloc(n/2*sizeof(complex));
 	complex *h = (complex *)malloc(n/2*sizeof(complex));
@@ -47,7 +47,7 @@ int main() {
 	FILE *f1 = fopen("fft.txt", "w");
 	FILE *f2 = fopen("ifft.txt", "w");
 	FILE *f3 = fopen("conv.txt", "w");
-	for (int j = 0; j < 20; j++) {
+	for (int j = 0; j <= 20; j++) {
 		srand(time(0));
 		int n = 1 << j;
 		complex *a = (complex *)malloc(sizeof(complex)*n);
@@ -66,7 +66,7 @@ int main() {
 		fprintf(f2, "%lf\n", 1000*(double)(ifft_end - ifft_begin)/CLOCKS_PER_SEC);
 		free(a);
 	}
-	for (int j = 1; j < 1000; j++) {
+	for (int j = 10; j <= 1000; j+=10) {
 		int n = j;
 		complex *h = (complex *)malloc(sizeof(complex)*n);
 		for (int i = 0; i < n; i++) h[i] = random()/(1.0*RAND_MAX);
