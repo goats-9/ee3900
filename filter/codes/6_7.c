@@ -53,7 +53,7 @@ int main() {
 		srand(time(0));
 		int n = 1 << j;
 		complex *a = (complex *)malloc(sizeof(complex)*n);
-		for (int i = 0; i < n; i++) a[i] = random()/(1.0*RAND_MAX);
+		for (int i = 0; i < n; i++) a[i] = (double)random()/RAND_MAX;
 		// FFT Simulations
 		clock_t fft_begin = clock();
 		a = myfft(n, a);
@@ -71,9 +71,9 @@ int main() {
 	for (int j = 10; j <= 1000; j+=10) {
 		int n = j;
 		complex *h = (complex *)malloc(sizeof(complex)*n);
-		for (int i = 0; i < n; i++) h[i] = random()/(1.0*RAND_MAX);
+		for (int i = 0; i < n; i++) h[i] = (double)random()/RAND_MAX;
 		complex *x = (complex *)malloc(sizeof(complex)*n);
-		for (int i = 0; i < n; i++) x[i] = random()/(1.0*RAND_MAX);
+		for (int i = 0; i < n; i++) x[i] = (double)random()/RAND_MAX;
 		// Convolution simulation
 		clock_t conv_begin = clock();
 		complex *y = convolve(h, x, n);
@@ -83,15 +83,15 @@ int main() {
 		free(x); free(h);
 	}
 	fclose(f1); fclose(f2); fclose(f3);
+	// FFT-IFFT Tests
 	int N = 8;
 	complex* test = (complex *)malloc(sizeof(complex)*N);
-	complex* fft_test = (complex *)malloc(sizeof(complex)*N);
-	complex* ifft_test = (complex *)malloc(sizeof(complex)*N);
-	fft_test = myfft(N, test);
-	ifft_test = myifft(N, fft_test);
+	for (int i = 0; i < N; i++) test[i] = (double)random()/RAND_MAX;
+	complex* fft_test = myfft(N, test);
+	complex* ifft_test = myifft(N, fft_test);
 	bool fl = true;
 	for (int i = 0; i < N; i++) { 
-		if (abs(test[i] - ifft_test[i]) >= EPS) { 
+		if (cabs(test[i] - ifft_test[i]) >= EPS) { 
 			fl = false;
 			break;
 		}
@@ -104,7 +104,7 @@ int main() {
 	for (int i = 0; i < N; i++) ifft_test[i] = conj(ifft_test[i])/(1.0*N);
 	fl = true;
 	for (int i = 0; i < N; i++) { 
-		if (abs(test[i] - ifft_test[i]) >= EPS) { 
+		if (cabs(test[i] - ifft_test[i]) >= EPS) { 
 			fl = false;
 			break;
 		}
@@ -112,8 +112,7 @@ int main() {
 	printf("Testing FFT algorithm... ");
 	if (fl) printf("[OK]\n");
 	else printf("[BAD]\n");
-	return 0;
-	free(fft_test);
-	free(ifft_test);
 	free(test);
+	// End Tests
+	return 0;
 }
