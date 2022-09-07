@@ -1,8 +1,10 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <math.h>
 #include <stdlib.h>
 #include <complex.h>
 #include <time.h>
+#define EPS 1e-6
 
 complex *myfft(int n, complex *a) {
 	if (n == 1) return a;
@@ -81,5 +83,37 @@ int main() {
 		free(x); free(h);
 	}
 	fclose(f1); fclose(f2); fclose(f3);
+	int N = 8;
+	complex* test = (complex *)malloc(sizeof(complex)*N);
+	complex* fft_test = (complex *)malloc(sizeof(complex)*N);
+	complex* ifft_test = (complex *)malloc(sizeof(complex)*N);
+	fft_test = myfft(N, test);
+	ifft_test = myifft(N, fft_test);
+	bool fl = true;
+	for (int i = 0; i < N; i++) { 
+		if (abs(test[i] - ifft_test[i]) >= EPS) { 
+			fl = false;
+			break;
+		}
+	}
+	printf("Testing FFT-IFFT combination... ");
+	if (fl) printf("[OK]\n");
+	else printf("[BAD]\n");
+	for (int i = 0; i < N; i++) fft_test[i] = conj(fft_test[i]);
+	ifft_test = myfft(N, fft_test);
+	for (int i = 0; i < N; i++) ifft_test[i] = conj(ifft_test[i])/(1.0*N);
+	fl = true;
+	for (int i = 0; i < N; i++) { 
+		if (abs(test[i] - ifft_test[i]) >= EPS) { 
+			fl = false;
+			break;
+		}
+	}
+	printf("Testing FFT algorithm... ");
+	if (fl) printf("[OK]\n");
+	else printf("[BAD]\n");
 	return 0;
+	free(fft_test);
+	free(ifft_test);
+	free(test);
 }
