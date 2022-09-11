@@ -15,6 +15,8 @@ def myfiltfilt(b, a, input_signal):
 
 #read .wav file 
 input_signal,fs = sf.read('Sound_Noise.wav') 
+print(len(input_signal))
+np.savetxt("in.txt", input_signal)
 
 #sampling frequency of Input signal
 sampl_freq=fs

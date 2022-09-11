@@ -11,7 +11,7 @@ input_signal,fs = sf.read('Sound_Noise.wav')
 sampl_freq=fs
 
 #order of the filter
-order=7 
+order=4 
 
 #cutoff frquency 4kHz
 cutoff_freq=4000.0  
@@ -26,7 +26,7 @@ output_signal = signal.filtfilt(b, a, input_signal)
 # get partial fraction expansion
 r, p, k = signal.residuez(b, a)
 #number of terms of the impulse response
-sz = 64
+sz = 32
 sz_lin = np.arange(sz)
 
 dftmtx = np.fft.fft(np.eye(sz))

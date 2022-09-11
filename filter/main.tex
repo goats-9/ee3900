@@ -790,26 +790,13 @@ $ python3 7_1.py
 \item Repeat all the exercises in the previous sections for the above $a$ and $b$.
 
 \solution
-%\begin{align}
-%	\mtx{a} =
-%	\begin{pmatrix}
-%		4.44 \\ 8.78 \\ -9.93 \\ 6.90 \\ -2.93 \\ 0.70 \\ -0.07
-%	\end{pmatrix}
-%	\mtx{b} = 
-%	\begin{pmatrix}
-%		5.02 \times 10^{-5} \\ 3.52 \times 10^{-4} \\ 1.05 \times 10^{-3} \\ 1.76 \times 10^{-3} \\ 1.76 \times 10^{-3} \\ 1.05 \times 10^{-3} \\ 3.52 \times 10^{-4} \\ 5.02 \times 10^{-5} 
-%	\end{pmatrix}
-%\end{align}
 For the given values, the difference equation is
 \begin{align}
-	&y(n) - \brak{4.44}y(n - 1) + \brak{8.78}y(n - 2) \nonumber \\
-	&- \brak{9.93}y(n - 3) + \brak{6.90}y(n - 4) \nonumber \\
-	&- \brak{2.93}y(n - 5) \nonumber + \brak{0.70}y(n - 6) \nonumber \\
-	&- \brak{0.07}y(n - 7) = \brak{5.02 \times 10^{-5}}x(n) \nonumber \\
-	&+ \brak{3.52 \times 10^{-4}}x(n - 1) + \brak{1.05 \times 10^{-3}}x(n - 2) \nonumber \\
-	&+ \brak{1.76 \times 10^{-3}}x(n - 3) + \brak{1.76 \times 10^{-3}}x(n - 4) \nonumber \\
-	&+ \brak{1.05 \times 10^{-3}}x(n - 5) + \brak{3.52 \times 10^{-4}}x(n - 6) \nonumber \\
-	&+ \brak{5.02 \times 10^{-5}}x(n - 7)
+	&y(n) - \brak{2.52}y(n - 1) + \brak{2.56}y(n - 2) \nonumber \\
+	&- \brak{1.21}y(n - 3) + \brak{0.22}y(n - 4) \nonumber \\
+	&= \brak{3.45 \times 10^{-3}}x(n) + \brak{1.38 \times 10^{-2}}x(n - 1) \nonumber \\
+	&+ \brak{2.07 \times 10^{-2}}x(n - 2) + \brak{1.38 \times 10^{-2}}x(n - 3) \nonumber \\
+	&+ \brak{3.45 \times 10^{-3}}x(n - 4)
 \end{align}
 From \eqref{eq:iir_filter_gen}, we see that the transfer function can be written as follows
 \begin{align}
@@ -827,14 +814,23 @@ terms that might be left over. We can now take the inverse $z$-transform of
 \end{align}
 Substituting the values,
 \begin{align}
-	&h(n) = [\brak{2.76}\brak{0.55}^n \nonumber \\ 
-	&+ \brak{-1.05-1.84\j}\brak{0.57+0.16\j}^n \nonumber \\
-	&+ \brak{-1.05+1.84\j}\brak{0.57-0.16\j}^n \nonumber \\
-	&+ \brak{-0.53+0.08\j}\brak{0.63+0.32\j}^n \nonumber \\
-	&+ \brak{-0.53-0.08\j}\brak{0.63-0.32\j}^n \nonumber \\
-	&+ \brak{0.20+0.004\j}\brak{0.75+0.47\j}^n \nonumber \\
-	&+ \brak{0.20-0.004\j}\brak{0.75-0.47\j}^n]u(n) \nonumber \\
-	&+ \brak{-6.81 \times 10^{-4}}\delta(n)
+	&h(n) = [\brak{-0.24-0.71\j}\brak{0.56+0.14\j}^n \nonumber \\
+	&+ \brak{-0.24+0.71\j}\brak{0.56-0.14\j}^n \nonumber \\
+	&+ \brak{-0.25+0.12\j}\brak{0.70+0.41\j}^n \nonumber \\
+	&+ \brak{-0.25-0.12\j}\brak{0.70-0.41\j}^n]u(n) \nonumber \\
+	&+ \brak{1.6 \times 10^{-2}}\delta(n) \\
+	&\implies h(n) = \brak{1.5}\brak{0.58}^n\cos\brak{n\alpha_1 + \beta_1} \nonumber \\
+	&+ \brak{0.55}\brak{0.81}^n\cos\brak{n\alpha_2 + \beta_2} \nonumber \\
+	&+ \brak{1.6 \times 10^{-2}}\delta(n)
+	\label{eq:h-n-real}
+\end{align}
+where
+\begin{align}
+	\tan{\alpha_1} &= 0.25 \\
+	\tan{\beta_1} &= 2.96 \\
+	\tan{\alpha_2} &= 0.59 \\
+	\tan{\beta_2} &= -0.48
+	\label{eq:h-params}
 \end{align}
 The values $r(i)$, $p(i)$, $k(i)$ and thus the impulse response function are computed and plotted at
 \begin{lstlisting}

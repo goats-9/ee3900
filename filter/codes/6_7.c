@@ -114,5 +114,8 @@ int main() {
 	else printf("[BAD]\n");
 	free(test);
 	// End Tests
+	// Run Python Codes
+	system("python 6_7_1.py");
+	system("python 6_7_2.py");
 	return 0;
 }

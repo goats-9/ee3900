@@ -11,7 +11,7 @@ input_signal,fs = sf.read('Sound_Noise.wav')
 sampl_freq=fs
 
 #order of the filter
-order=7 
+order=4
 
 #cutoff frquency 4kHz
 cutoff_freq=4000.0  
@@ -26,7 +26,7 @@ b, a = signal.butter(order, Wn, 'low')
 r, p, k = signal.residuez(b, a)
 
 #number of terms of the impulse response
-sz = 50
+sz = 32
 sz_lin = np.arange(sz)
 
 def rp(x):
@@ -37,6 +37,7 @@ rp_vec = vec(rp, otypes=['double'])
 h1 = rp_vec(sz_lin)
 k_add = np.pad(k, (0, sz - len(k)), 'constant', constant_values=(0,0))
 h = h1 + k_add
+#np.savetxt("h.txt", h)
 plt.stem(sz_lin, h)
 plt.xlabel('n')
 plt.ylabel('h(n)')
