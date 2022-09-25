@@ -45,44 +45,118 @@ complex *convolve(complex *h, complex *x, int n) {
 	return a;
 }
 
-int main() { 
+complex *dft(complex *x, int n) { 
+    complex *X = (complex *)calloc(n, sizeof(complex));
+    for (int i = 0; i < n; i++) { 
+        for (int j = 0; j < n; j++) { 
+            X[i] += x[j]*cexp(-I*2*M_PI*i*j/n);
+        }
+    }
+    return X;
+}
+
+complex *idft(complex *x, int n) { 
+    complex *X = (complex *)calloc(n, sizeof(complex));
+    for (int i = 0; i < n; i++) { 
+        for (int j = 0; j < n; j++) { 
+            X[i] += x[j]*cexp(I*2*M_PI*i*j/n);
+        }
+        X[i] /= n;
+    }
+    return X;
+}
+
+complex **dftmtx(int n) { 
+    complex **mtx = (complex **)calloc(n, sizeof(complex *));
+    for (int i = 0; i < n; i++) mtx[i] = (complex *)calloc(n, sizeof(complex));
+    for (int i = 0; i < n; i++) { 
+        for (int j = 0; j < n; j++) { 
+            mtx[i][j] = cexp(I*2*M_PI*i*j/n);
+        }
+    }
+    return mtx;
+}
+
+complex **invmtx(int n) { 
+    complex **mtx = (complex **)calloc(n, sizeof(complex *));
+    for (int i = 0; i < n; i++) mtx[i] = (complex *)calloc(n, sizeof(complex));
+    for (int i = 0; i < n; i++) { 
+        for (int j = 0; j < n; j++) { 
+            mtx[i][j] = cexp(-I*2*M_PI*j*i/n)/(double)n;
+        }
+    }
+    return mtx;
+}
+
+int main(int argc, char *argv[]) { 
 	FILE *f1 = fopen("fft.txt", "w");
 	FILE *f2 = fopen("ifft.txt", "w");
 	FILE *f3 = fopen("conv.txt", "w");
-	for (int j = 0; j <= 20; j++) {
-		srand(time(0));
-		int n = 1 << j;
-		complex *a = (complex *)malloc(sizeof(complex)*n);
-		for (int i = 0; i < n; i++) a[i] = (double)random()/RAND_MAX;
-		// FFT Simulations
-		clock_t fft_begin = clock();
-		a = myfft(n, a);
-		clock_t fft_end = clock();
-		// End FFT simulation
-		// IFFT simulation
-		clock_t ifft_begin = clock();
-		a = myifft(n, a);
-		clock_t ifft_end = clock();
-		// End IFFT simulation
-		fprintf(f1, "%lf\n", 1000*(double)(fft_end - fft_begin)/CLOCKS_PER_SEC);
-		fprintf(f2, "%lf\n", 1000*(double)(ifft_end - ifft_begin)/CLOCKS_PER_SEC);
-		free(a);
-	}
-	for (int j = 10; j <= 1000; j+=10) {
+	FILE *f4 = fopen("dft.txt", "w");
+	FILE *f5 = fopen("dftmtx.txt", "w");
+    for (int j = 0; j <= 20; j++) {
+    	srand(time(0));
+    	int n = 1 << j;
+    	complex *a = (complex *)malloc(sizeof(complex)*n);
+    	for (int i = 0; i < n; i++) a[i] = (double)random()/RAND_MAX;
+    	// FFT Simulations
+    	clock_t fft_begin = clock();
+    	a = myfft(n, a);
+    	clock_t fft_end = clock();
+    	// End FFT simulation
+    	// IFFT simulation
+    	clock_t ifft_begin = clock();
+    	a = myifft(n, a);
+    	clock_t ifft_end = clock();
+    	// End IFFT simulation
+    	fprintf(f1, "%lf\n", 1000*(double)(fft_end - fft_begin)/CLOCKS_PER_SEC);
+    	fprintf(f2, "%lf\n", 1000*(double)(ifft_end - ifft_begin)/CLOCKS_PER_SEC);
+    	free(a);
+    }
+	for (int j = 1; j <= 1000; j++) {
 		int n = j;
 		complex *h = (complex *)malloc(sizeof(complex)*n);
 		for (int i = 0; i < n; i++) h[i] = (double)random()/RAND_MAX;
 		complex *x = (complex *)malloc(sizeof(complex)*n);
-		for (int i = 0; i < n; i++) x[i] = (double)random()/RAND_MAX;
-		// Convolution simulation
-		clock_t conv_begin = clock();
-		complex *y = convolve(h, x, n);
-		clock_t conv_end = clock();
-		// End convolution simulation
+		complex *dx = (complex *)malloc(sizeof(complex)*n);
+		complex *ix = (complex *)malloc(sizeof(complex)*n);
+		for (int i = 0; i < n; i++) x[i] = (double)random()/RAND_MAX, dx[i] = 0.0, ix[i] = 0.0;
+	    // Convolution simulation
+	    clock_t conv_begin = clock();
+	    complex *y = convolve(h, x, n);
+	    clock_t conv_end = clock();
+	    // End convolution simulation
 		fprintf(f3, "%lf\n", 1000*(double)(conv_end - conv_begin)/CLOCKS_PER_SEC);
-		free(x); free(h);
+        // DFT-IDFT simulation
+        clock_t dft_begin = clock();
+        complex *X = dft(x, n);
+        complex *H = dft(h, n);
+        complex *Y = (complex *)malloc(sizeof(complex)*n);
+        for (int i = 0; i < n; i++) Y[i] = H[i]*X[i];
+        y = idft(Y, n);
+        clock_t dft_end = clock();
+        // End DFT-IDFT simulation
+		fprintf(f4, "%lf\n", 1000*(double)(dft_end - dft_begin)/CLOCKS_PER_SEC);
+        // DFT Matrix simulation
+        clock_t dftmtx_begin = clock();
+        complex **dm = dftmtx(j);
+        complex **idm = invmtx(j);
+        for (int i = 0; i < n; i++) { 
+            for (int j = 0; j < n; j++) { 
+               dx[i] += dm[i][j]*x[j];
+            }
+        }
+        for (int i = 0; i < n; i++) { 
+            for (int j = 0; j < n; j++) { 
+               ix[i] += idm[i][j]*dx[j];
+            }
+        }
+        clock_t dftmtx_end = clock();
+        // End DFT Matrix simulation
+		fprintf(f5, "%lf\n", 1000*(double)(dftmtx_end - dftmtx_begin)/CLOCKS_PER_SEC);
+		free(x); free(h); free(y); free(dm); free(idm);
 	}
-	fclose(f1); fclose(f2); fclose(f3);
+	fclose(f1); fclose(f2); fclose(f3); fclose(f4); fclose(f5);
 	// FFT-IFFT Tests
 	int N = 8;
 	complex* test = (complex *)malloc(sizeof(complex)*N);
