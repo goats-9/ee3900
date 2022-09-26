@@ -10,7 +10,7 @@ int main()
     clock_t fb, fe;
     FILE *fp1 = fopen("fftw.txt", "w");
     int N;
-    for (N=1;N<=1000;N++)
+    for (N=10;N<=1000;N+=10)
     {
     fftwl_complex in[N], out[N];
     fftwl_plan p1, q;

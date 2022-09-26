@@ -7,7 +7,7 @@ from scipy.optimize import curve_fit
 from matplotlib import pyplot as plt
 
 def nlgn(n, a): return a*n*np.log2(n)
-def nsq(n, a): return a*(n**2)
+def nsq(n, a): return a*n*n
 def lgn(n, a): return a*np.log2(n);
 
 def pmtx(n):
@@ -35,33 +35,41 @@ t1 = []
 N = 11
 x = 1<<np.arange(N)
 X = np.arange(2**(N-1)+1)
-x_t = np.linspace(1,1001,1000)
+x_t = np.linspace(10,1001,100)
 eps = 1e-6
 for i in range(0, N, 1):
     v = np.random.random(size=1<<i)
     st = timeit.default_timer()
-    fftmtx(1<<i).dot(v)
+    K = fftmtx(1<<i).dot(v)
     en = timeit.default_timer()
-    t1.append(en - st)
+    t1.append(1000*(en - st))
 
 t2 = np.loadtxt('fftw.txt')
 t3 = np.loadtxt('conv.txt')
 t4 = np.loadtxt('dft.txt')
 t5 = np.loadtxt('dftmtx.txt')
-plt.plot(x, t1, '.')
-popt, pcov = curve_fit(nsq, x, t1)
-p1 = nsq(X, *popt)
-plt.plot(X, p1, '.')
 plt.plot(x_t, t2, '.')
 popt, pcov = curve_fit(nlgn, x_t, t2)
 p1 = nlgn(X, *popt)
-plt.plot(X, p1, '.')
+plt.plot(X, p1)
 plt.plot(x_t, t3, '.')
 popt, pcov = curve_fit(nsq, x_t, t3)
 p1 = nsq(X, *popt)
-plt.plot(X, p1, '.')
-plt.plot(x, t4, '.')
+plt.plot(X, p1)
+plt.plot(x_t, t4, '.')
 popt, pcov = curve_fit(nsq, x_t, t4)
 p1 = nsq(X, *popt)
-plt.plot(X, p1, '.')
-plt.show()
+plt.plot(X, p1)
+plt.plot(x_t, t5, '.')
+popt, pcov = curve_fit(nsq, x_t, t5)
+p1 = nsq(X, *popt)
+plt.plot(X, p1)
+plt.plot(x, t1, '.')
+#plt.legend(['Simulation (FFT)', 'Analysis (FFT/$O$(n$\log$n))', 'Simulation (Convolution)', 'Analysis (Convolution/$O$(n$^2$))', 'Simulation (DFT)', 'Analysis (DFT/$O$(n$^2$))', 'Simulation (DFT Matrix)', 'Analysis (DFT Matrix/$O$(n$^2$))'])
+plt.legend(['Simulation (FFT)', 'Analysis (FFT/$O$(n$\log$n))', 'Simulation (Convolution)', 'Analysis (Convolution/$O$(n$^2$))', 'Simulation (DFT)', 'Analysis (DFT/$O$(n$^2$))', 'Simulation (DFT Matrix)', 'Analysis (DFT Matrix/$O$(n$^2$))', 'Comparison (DFT Matrix/Python)'])
+#plt.legend(['Simulation (FFT)', 'Analysis (FFT/$O$(n$\log$n))', 'Simulation (Convolution)', 'Analysis (Convolution/$O$(n$^2$))', 'Simulation (DFT Matrix)', 'Analysis (DFT Matrix/$O$(n$^2$))'])
+plt.xlabel('n')
+plt.ylabel('T(n) (ms)')
+plt.grid()
+plt.tight_layout()
+plt.savefig('../figs/complexity.png')

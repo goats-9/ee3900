@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
     	fprintf(f2, "%lf\n", 1000*(double)(ifft_end - ifft_begin)/CLOCKS_PER_SEC);
     	free(a);
     }
-	for (int j = 1; j <= 1000; j++) {
+	for (int j = 10; j <= 1000; j+=10) {
 		int n = j;
 		complex *h = (complex *)malloc(sizeof(complex)*n);
 		for (int i = 0; i < n; i++) h[i] = (double)random()/RAND_MAX;
@@ -127,11 +127,11 @@ int main(int argc, char *argv[]) {
 	    clock_t conv_end = clock();
 	    // End convolution simulation
 		fprintf(f3, "%lf\n", 1000*(double)(conv_end - conv_begin)/CLOCKS_PER_SEC);
+        complex *Y = (complex *)malloc(sizeof(complex)*n);
         // DFT-IDFT simulation
         clock_t dft_begin = clock();
         complex *X = dft(x, n);
         complex *H = dft(h, n);
-        complex *Y = (complex *)malloc(sizeof(complex)*n);
         for (int i = 0; i < n; i++) Y[i] = H[i]*X[i];
         y = idft(Y, n);
         clock_t dft_end = clock();
@@ -154,7 +154,9 @@ int main(int argc, char *argv[]) {
         clock_t dftmtx_end = clock();
         // End DFT Matrix simulation
 		fprintf(f5, "%lf\n", 1000*(double)(dftmtx_end - dftmtx_begin)/CLOCKS_PER_SEC);
-		free(x); free(h); free(y); free(dm); free(idm);
+        // Free allocated memory
+        for (int i = 0; i < n; i++) { free(dm[i]); free(idm[i]); }
+		free(x); free(h); free(y); free(dm); free(idm); free(dx); free(ix); free(X); free(H); free(Y); 
 	}
 	fclose(f1); fclose(f2); fclose(f3); fclose(f4); fclose(f5);
 	// FFT-IFFT Tests
