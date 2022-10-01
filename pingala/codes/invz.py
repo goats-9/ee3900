@@ -1,6 +1,6 @@
 from lcapy.discretetime import n, z
 import sympy
-b = [1, 2]
+b = [1]
 a = [1, -1, -1]
 A = a[0]*(z**0)
 B = b[0]*(z**0)
