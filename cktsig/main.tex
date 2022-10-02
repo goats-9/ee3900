@@ -301,11 +301,17 @@ Now, labelling points G and X as in Fig. \ref{fig:ckt-q1}, we use KCL at X.
 \end{align}
 \item Find $v_{C_0}(t)$.  Plot using python.
 
-    \solution Taking the inverse Laplace transform in \eqref{eq:V-s},
+\solution Taking the inverse Laplace transform in \eqref{eq:V-s},
 \begin{align}
     &V(s) \system{L} \frac{2R_1 + R_2}{R_1 + R_2}u(t)\brak{1 - e^{-\brak{\frac{1}{R_1} + \frac{1}{R_2}}\frac{t}{C_0}}} \\
     &= \frac{4}{3}\brak{1 - e^{-\brak{1.5 \times 10^6}t}}u(t)
 \end{align}
+The python code \texttt{codes/2\_6.py} plots the graph below.
+\begin{figure}[!htb]
+    \includegraphics[width=\columnwidth]{figs/2_6.png}
+    \caption{$v_{C_0}(t)$ before the switch is flipped}
+    \label{fig:v1-t}
+\end{figure}
 	\item Verify your result using ngspice.
 \end{enumerate}
 
@@ -333,31 +339,78 @@ below.
 \caption{}
 \label{fig:ckt-q2}
 \end{figure}
-\item Draw the equivalent $s$-domain resistive circuit when S is switched to position Q.  Use variables $R_1, R_2, C_0$ for the passive elements.
+
+Since capacitor behaves as an open circuit, we use KCL at X.
+\begin{align}
+    \frac{V - 0}{1} + \frac{V - 2}{2} = 0
+    \implies V = \SI[parse-numbers=false]{\frac{2}{3}}{\V}
+\end{align}                                         
+and hence, $q_2 = \SI[parse-numbers=false]{\frac{2}{3}}{\micro\coulomb}$.
+
+\item Draw the equivalent $s$-domain resistive circuit w	hen S is switched to position Q.  Use variables $R_1, R_2, C_0$ for the passive elements.
 	
 \begin{figure}[!htb]
     \begin{center}
-    \begin{circuitikz} \draw
-    (0,0) -- (0,2)
+    \begin{circuitikz} 
+    \ctikzset{resistor = european}
+    \draw
+    (0,0) -- (0,3)
     node[label={above:Q}] {}
-    to[R, l^=$1 \Omega$, *-*] (3,2) 
+    to[R, l^=$R_1$, *-*] (3,3) 
     node[label={above:X}] {}
-    to[R, l^=$2 \Omega$] (5.5,2)
-    to[battery1, l=2 $V$] (5.5,0)
+    to[R, l^=$R_2$] (5.5,3)
+    to[battery1, l= $\frac{2}{s} V$] (5.5,0)
     -- (0,0)
-    (3,2) to[C, l=1 ${\mu}F$] (3,0) 
+    (3,3) to[battery1, l=$\frac{4}{3s} V$] (3,2) to[R, l=$\frac{1}{sC_0}$] (3,0) 
     -- (3,-0.5) node[ground, label={right:G}] {};
     \end{circuitikz}
     \end{center}
 \caption{}
-\label{fig:ckt-q2}
+\label{fig:sckt-q2}
 \end{figure}
-		\item $V_{C_0}(s)$ = ?  
-	\item $v_{C_0}(t)$ = ? Plot using python.
-	\item Verify your result using ngspice.
-	\item Find $v_{C_0}(0-), v_{C_0}(0+)$ and  $v_{C_0}(\infty) $. 
+\item $V_{C_0}(s)$ = ?  
 
+\solution Using KCL at node X in Fig. \ref{fig:sckt-q2}
+\begin{align}
+    \frac{V - 0}{R_1} + \frac{V - \frac{2}{s}}{R_2} + sC_0\brak{V - \frac{4}{3s}} = 0 \\
+\implies V_{C_0}(s) = \frac{\frac{2}{sR_2} + \frac{4C_0}{3}}{\frac{1}{R_1} + \frac{2}{R_2} + sC_0}
+\label{eq:v2-s}
+\end{align}
+\item $v_{C_0}(t)$ = ? Plot using python.
 
-	\end{enumerate}
+\solution From \eqref{eq:v2-s},
+\begin{align}
+    &V_{C_0}(s) = \frac{4}{3}\brak{\frac{1}{\frac{1}{C_0}\brak{\frac{1}{R_1} + \frac{1}{R_2}}+s}} \nonumber \\
+    &+ \frac{2}{R_2\brak{\frac{1}{R_1} +\frac{1}{R_2}}}\brak{\frac{1}{s} - \frac{1}{\frac{1}{C_0}\brak{\frac{1}{R_1} + \frac{1}{R_2}} + s}}
+\end{align}
+Taking an inverse Laplace Transform,
+\begin{align}
+    &v_{C_0}(t) = \frac{4}{3}e^{-\brak{\frac{1}{R_1} + \frac{1}{R_2}}\frac{t}{C_0}}u(t) \nonumber \\ 
+    &+ \frac{2}{R_2\brak{\frac{1}{R_1}+\frac{1}{R_2}}}\brak{1 - e^{-\brak{\frac{1}{R_1} + \frac{1}{R_2}}\frac{t}{C_0}}}u(t)
+\end{align}
+Substituting values gives
+\begin{align}
+    v_{C_0}(t) = \frac{2}{3}\brak{1 +e^{-\brak{1.5 \times 10^6}t}}u(t)
+    \label{eq:v2-t}
+\end{align}
+The Python code \texttt{codes/3\_4.py} plots the graph below.
+\begin{figure}[!htb]
+    \includegraphics[width=\columnwidth]{figs/3_4.png}
+    \caption{$v_{C_0}(t)$ after the switch is flipped}
+    \label{fig:v2-t}
+\end{figure}
+\item Verify your result using ngspice.
+\item Find $v_{C_0}(0-), v_{C_0}(0+)$ and  $v_{C_0}(\infty) $. 
+
+\solution From the initial conditions,
+\begin{align}
+    v_{C_0}(0-) = \frac{q_1}{C} = \SI[parse-numbers=false]{\frac{4}{3}}{\V}
+\end{align}
+Using \eqref{eq:v2-t},
+\begin{align}
+    v_{C_0}(0+) &= \lim_{t \to 0+}v_{C_0}(t) = \SI[parse-numbers=false]{\frac{4}{3}}{\V} \\
+    v_{C_0}(\infty) &= \lim_{t \to \infty}v_{C_0}(t) = \SI[parse-numbers=false]{\frac{2}{3}}{\V}
+\end{align}
+\end{enumerate}
 
 \end{document}
