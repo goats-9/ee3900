@@ -425,6 +425,41 @@ Using \eqref{eq:v2-t},
     v_{C_0}(0+) &= \lim_{t \to 0+}v_{C_0}(t) = \SI[parse-numbers=false]{\frac{4}{3}}{\V} \\
     v_{C_0}(\infty) &= \lim_{t \to \infty}v_{C_0}(t) = \SI[parse-numbers=false]{\frac{2}{3}}{\V}
 \end{align}
+
+\item Obtain the Fig. in problem 3.2 using the equivalent differential equations.
+
+\solution The equivalent circuit in the $t$-domain is shown below.
+	
+\begin{figure}[!htb]
+    \begin{center}
+    \begin{circuitikz} 
+    \draw
+    (0,0) -- (0,3)
+    node[label={above:Q}] {}
+    to[R, l^=$R_1$, *-*, i = $i_1$] (3,3) 
+    node[label={above:X}] {}
+    to[R, l^=$R_2$, i = $i_3$] (5.5,3)
+    to[battery1, l= $\SI{2}{\V}$] (5.5,0)
+    -- (0,0)
+    (3,3) to[battery1, l=$\frac{4}{3} V$] (3,2) to[C, l=$C_0$, i = $i_2$] (3,0) ;
+    \end{circuitikz}
+    \end{center}
+\caption{}
+\label{fig:tckt-q2}
+\end{figure}
+From KCL and KVL,
+\begin{align}
+    &i_1 = i_2 +i_3 \\
+    &i_1R_1 + \frac{4}{3} + \frac{1}{C_0}\int_{0}^{t}i_2dt = 0 \\
+    &\frac{4}{3} + \frac{1}{C_0}\int_{0}^{t}i_2dt - i_3R_2 - 2 = 0 \\
+\end{align}
+Taking Laplace Transforms on both sides and using the properties of Laplace Transforms,
+\begin{align}
+    &I_1 = I_2 +I_3 \label{eq:s1}\\
+    &I_1R_1 + \frac{4}{3} + \frac{1}{sC_0}I_2 = 0 \\
+    &\frac{4}{3} + \frac{1}{sC_0}I_2 - I_3R_2 - 2 = 0 \label{eq:s3} \\
+\end{align}
+where $i(t) \system{L} I(s)$. Note that the capacitor is equivalent to a resistive element of resistance $R_C = \frac{1}{sC_0}$ in the $s$-domain. Equations \eqref{eq:s1} - \eqref{eq:s3} precisely describe Fig. \ref{fig:sckt-q2}. 
 \end{enumerate}
 
 \end{document}
