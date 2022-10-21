@@ -110,6 +110,8 @@ columns=fullflexible
 \theoremstyle{remark}
 \newtheorem{rem}{Remark}
 \newcommand{\sgn}{\mathop{\mathrm{sgn}}}
+\newcommand{\rect}{\mathop{\mathrm{rect}}}
+\newcommand{\sinc}{\mathop{\mathrm{sinc}}}
 \providecommand{\abs}[1]{\left\vert#1\right\vert}
 \providecommand{\res}[1]{\Res\displaylimits_{#1}} 
 \providecommand{\norm}[1]{\lVert#1\rVert}
@@ -119,7 +121,7 @@ columns=fullflexible
 \providecommand{\ztrans}{\overset{\mathcal{Z}}{ \rightleftharpoons}}
 
 %\providecommand{\hilbert}{\overset{\mathcal{H}}{ \rightleftharpoons}}
-\providecommand{\system}{\overset{\mathcal{H}}{ \longleftrightarrow}}
+\providecommand{\system}[1]{\overset{\mathcal{#1}}{ \longleftrightarrow}}
 	%\newcommand{\solution}[2]{\textbf{Solution:}{#1}}
 \newcommand{\solution}{\noindent \textbf{Solution: }}
 \providecommand{\dec}[2]{\ensuremath{\overset{#1}{\underset{#2}{\gtrless}}}}
@@ -245,8 +247,8 @@ Let
 ,ref=\thesection.\theenumi]
 \item Plot $x(t)$.
 
-\solution The Python code \texttt{codes/1\_1.py} plots $x(t)$ in Fig. \eqref{fig:xt}.
-\begin{figure}[!ht]
+\solution The Python code \texttt{codes/1\_1.py} plots $x(t)$ below.
+\begin{figure}[!htp]
     \includegraphics[width=\columnwidth]{figs/1_1.png}
     \caption{$x(t)$}
     \label{fig:xt}
@@ -255,11 +257,11 @@ Let
 
 \solution From Fig. \eqref{fig:xt}, we see that $x(t)$ is periodic. Further,
 \begin{align}
-    x\brak{t+\frac{1}{f_0}} &= A_0\abs{\sin\brak{2\pi f_0\brak{t + \frac{1}{f_0}}}} \\
-                            &= A_0\abs{\sin\brak{2\pi f_0t +2\pi}} \\
+    x\brak{t+\frac{1}{2f_0}} &= A_0\abs{\sin\brak{2\pi f_0\brak{t + \frac{1}{2f_0}}}} \\
+                            &= A_0\abs{\sin\brak{2\pi f_0t + \pi}} \\
                             &= A_0\abs{\sin\brak{2\pi f_0t}}
 \end{align}
-Hence the period of $x(t)$ is $\frac{1}{f_0}$.
+Hence the period of $x(t)$ is $\frac{1}{2f_0}$.
 \end{enumerate}
 \section{Fourier Series}
 Consider $A_0 =12$ and $f_0 = 50$ for all numerical calculations.
@@ -309,6 +311,7 @@ Thus,
             \frac{2A_0}{\pi\brak{1-n^2}} & n\ \text{even} \\
             0 & n\ \text{odd}
         \end{cases}
+        \label{eq:ck-xt}
 \end{align}
 \item Verify 
 	\eqref{eq:one-Z-complex}
@@ -341,9 +344,9 @@ Hence, for $k \ge 0$,
     \begin{cases}
         c_0 & k = 0 \\
         c_k + c_{-k} & k > 0
-    \end{cases} \\
+    \end{cases} \label{eq:ak} \\
     b_k &= c_k - c_{-k}
-    \label{eq:akbk}
+    \label{eq:bk}
 \end{align}
 \item Find $a_k$ and $b_k$ for 
 	\eqref{eq:10-orig-diff-def}
@@ -354,17 +357,17 @@ Hence, for $k \ge 0$,
           &= \sum_{k = -\infty}^{\infty}c_{-k}e^{\j2\pi kf_0t} \label{eq:sub} \\
           &= \sum_{k = -\infty}^{\infty}c_ke^{\j2\pi kf_0 t}
 \end{align}
-where we substitute $k \mapsto -k$ in \eqref{eq:sub}. Hence, we see that 
-$c_k = c_{-k}$. So, from \eqref{eq:akbk} and for $k \ge 0$,
+where we substitute $k := -k$ in \eqref{eq:sub}. Hence, we see that 
+$c_k = c_{-k}$. So, from \eqref{eq:ak} and \eqref{eq:bk}, for $k \ge 0$,
 \begin{align}
     a_k &= 
     \begin{cases}
         \frac{2A_0}{\pi} & k = 0 \\
         \frac{4A_0}{\pi\brak{1 - k^2}} & k > 0,\ k\ \text{even} \\
         0 & \text{otherwise}
-    \end{cases} \\
+    \end{cases} \label{eq:ak-xt}\\
     b_k &= 0
-    \label{eq:akbk-even}
+    \label{eq:bk-xt}
 \end{align}
 \item Verify 
 \eqref{eq:one-Z-real}
@@ -376,5 +379,193 @@ using python.
     \caption{Verification of \eqref{eq:one-Z-real}.}
     \label{fig:ver-real}
 \end{figure}
+\end{enumerate}
+\section{Fourier Transform}
+
+\begin{enumerate}[label=\thesection.\arabic*
+,ref=\thesection.\theenumi]
+\item 
+\begin{align}
+	\delta(t)&=0, \quad t\neq 0 \\
+	\int_{-\infty}^{\infty}\delta(t) \, dt&= 1
+\end{align}
+\item The Fourier Transform of $g(t)$ is
+\begin{align}
+G(f)=\int_{-\infty}^{\infty}g(t)e^{-j2\pi ft}\,dt
+\label{eq:fourier}
+\end{align}
+\item Show that 
+\begin{align}
+    g(t-t_0)&\system{F}G(f)e^{-j2\pi ft_0}
+    \label{eq:t-shift}
+\end{align}
+
+\solution We write, substituting $u := t-t_0$,
+\begin{align}
+    g(t-t_0)&\system{F}\int_{-\infty}^{\infty}
+            g(t-t_0)e^{-\j2\pi ft}\,dt \\
+            &=\int_{-\infty}^{\infty}
+            g(u)e^{-\j2\pi f(u + t_0)}\,du \\
+            &=G(f)e^{-j2\pi ft_0}
+\end{align}
+where the last equality follows from \eqref{eq:fourier}.
+\item Show that
+\begin{align}
+    G(t)&\system{F}g(-f)
+\end{align}
+
+\solution Using the definition of the Inverse Fourier Transform,
+\begin{align}
+    g(t)=\int_{-\infty}^{\infty}G(f)e^{\j2\pi ft}\,df
+    \label{eq:duality}
+\end{align}
+Hence, setting $t := -f$ and $f := t$, which implies $df = dt$,
+\begin{align}
+    g(-f)&=\int_{-\infty}^{\infty}G(t)e^{-\j2\pi ft}\,dt \\
+    \implies G(t)&\system{F}g(-f)
+\end{align}
+\item $\delta(t)\system{F}?$
+
+\solution We have, from the definition of $\delta(t)$,
+\begin{align}
+    \delta(t)&\system{F}\int_{-\infty}^{\infty}\delta(t)e^{-\j2\pi ft}\, dt \\
+             &=\int_{-\infty}^{\infty}\delta(0)\, dt \\
+             &=\int_{-\infty}^{\infty}\delta(t)\, dt = 1
+             \label{eq:fourier-delta}
+\end{align}
+\item $e^{-j2\pi f_0t}\system{F}?$
+
+\solution Suppose $g(t)\system{F}G(f)$. Then,
+\begin{align}
+    g(t)e^{\j2\pi f_0t}&\system{F}\int_{-\infty}^{\infty}
+                       g(t)e^{-\j2\pi\brak{f-f_0}t}\, dt \\
+                       &=F(f-f_0)
+                       \label{eq:f-shift}
+\end{align}
+Using \eqref{eq:duality} in \eqref{eq:fourier-delta}, $1\system{F}\delta(-f)$.
+Hence, applying \eqref{eq:f-shift},
+\begin{align}
+    e^{-\j2\pi f_0t}\system{F}\delta(-(f+f_0)) = \delta(f+f_0)
+    \label{eq:fourier-exp}
+\end{align}
+\item $\cos(2\pi f_0t)\system{F}?$
+
+\solution Using the linearity of the Fourier 
+Transform and \eqref{fourier-exp},
+\begin{align}
+    \cos\brak{2\pi f_0t} &= \frac{1}{2}
+                         \brak{e^{\j2\pi f_0t} + e^{-\j2\pi f_0t}} \\
+                         &\system{F}\frac{1}{2}\brak{\delta\brak{f+f_0} + \delta\brak{f-f_0}}
+\end{align}
+\item Find the Fourier Transform of $x(t)$ and plot it. Verify using python.
+
+\solution Substituting \eqref{eq:ck-xt} in \eqref{eq:one-Z-complex},
+\begin{align}
+    x(t)&\system{F}\sum_{k=-\infty}^{\infty}c_k\delta\brak{f+kf_0} \\
+        &=\frac{2A_0}{\pi}\sum_{k=-\infty}^{\infty}\frac{\delta\brak{f+2kf_0}}{1-4k^2}
+        \label{eq:fourier-xt}
+\end{align}
+The python code \texttt{codes/3\_8.py} verifies \eqref{eq:fourier-xt}.
+\begin{figure}[!ht]
+    \includegraphics[width=\columnwidth]{figs/3_8.png}
+    \caption{Fourier Transform of $x(t)$.}
+    \label{eq:fig-fourier-xt}
+\end{figure}
+\item Show that
+\begin{align}
+    \rect{t} \system{F} \sinc{t}
+\end{align}
+Verify using python.
+
+\solution We write
+\begin{align}
+    \rect{t}&\system{F}\int_{-\infty}^{\infty}\rect{t}e^{-\j2\pi ft}\, dt \\
+            &=\int_{-\frac{1}{2}}^{\frac{1}{2}}e^{-\j2\pi ft}\, dt \\
+            &=\frac{e^{\j\pi f} - e^{-\j\pi f}}{\j2\pi f} = \frac{\sin{\pi f}}{\pi f} = \sinc{f}
+            \label{eq:fourier-rect}
+\end{align}
+The python code \texttt{codes/3\_9.py} verifies \eqref{eq:fourier-rect}.
+\begin{figure}[!ht]
+    \includegraphics[width=\columnwidth]{figs/3_9.png}
+    \caption{Fourier Transform of $\rect(t)$.}
+    \label{eq:fig-fourier-rect}
+\end{figure}
+\item $\sinc{t}\system{F} ?$  Verify using python.
+
+\solution From \eqref{eq:duality}, we have 
+\begin{align}
+    \sinc{t}\system{F}\rect(-f)=\rect{f}
+    \label{eq:fourier-sinc}
+\end{align}
+Since $\rect{f}$ is an even function.
+The python code \texttt{codes/3\_10.py} verifies \eqref{eq:fourier-sinc}.
+\begin{figure}[!ht]
+    \includegraphics[width=\columnwidth]{figs/3_10.png}
+    \caption{Fourier Transform of $\sinc(t)$.}
+    \label{eq:fig-fourier-sinc}
+\end{figure}
+\end{enumerate}
+
+\section{Filter}
+\begin{enumerate}[label=\thesection.\arabic*
+,ref=\thesection.\theenumi]
+\item Find $H(f)$ which transforms $x(t)$ to DC 5V.
+The function $H(f)$ is a low pass filter which filters around the
+zero frequency component. The rectangular function represents an ideal
+low pass filter. Note that
+\begin{align}
+    \rect{\frac{f}{4f_0}} = 
+    \begin{cases}
+        1 & \abs{f} < 2f_0 \\
+        0 & \textrm{otherwise}
+    \end{cases}
+\end{align}
+and hence from \eqref{eq:fourier-xt},
+\begin{align}
+    H(f) = \frac{\pi V_0}{2A_0}\rect\brak{\frac{f}{4f_0}}
+    \label{eq:Hf}
+\end{align}
+where $V_0 =$ 5V.
+
+\item Find $h(t)$.
+
+\solution Suppose $g(t)\system{F}G(f)$. Then, for some
+nonzero $a \in \mathbb{R}$
+\begin{align}
+    g(at)&\system{F}\int_{-\infty}^{\infty}g(at)e^{-\j2\pi ft}\, dt \\
+         &=\frac{1}{a}\int_{-\infty}^{\infty}g(u)e^{\brak{-\j2\pi \frac{f}{a}t}}\, dt \\
+         &=\frac{1}{a}G\brak{\frac{f}{a}}
+         \label{eq:t-scaling}
+\end{align}
+where we have substituted $u := at$. Using 
+\eqref{eq:t-scaling} of the Fourier Transform in \eqref{eq:Hf},
+\begin{align}
+    h(t) = \frac{2\pi f_0V_0}{A_0}\sinc\brak{4f_0t}
+\end{align}
+\item Verify your result using convolution.
+
+\solution The Python code \texttt{codes/4\_3.py} verifies the result
+by plotting the graph below.
+\begin{figure}[!ht]
+    \includegraphics[width=\columnwidth]{figs/4_3.png}
+    \caption{Convolution of the two signals.}
+    \label{eq:fig-conv}
+\end{figure}
+\end{enumerate}
+\section{Filter Design}
+\begin{enumerate}[label=\thesection.\arabic*
+,ref=\thesection.\theenumi]
+\item Design a Butterworth filter for $H(f)$.
+
+\solution
+\item Design a Chebyschev filter for $H(f)$.
+
+\solution
+\item Design a circuit for your Butterworth filter.
+
+\solution
+\item Design a circuit for your Chebyschev filter.
+
+\solution
 \end{enumerate}
 \end{document}
