@@ -510,7 +510,8 @@ The python code \texttt{codes/3\_10.py} verifies \eqref{eq:fourier-sinc}.
 \begin{enumerate}[label=\thesection.\arabic*
 ,ref=\thesection.\theenumi]
 \item Find $H(f)$ which transforms $x(t)$ to DC 5V.
-The function $H(f)$ is a low pass filter which filters around the
+
+\solution The function $H(f)$ is a low pass filter which filters around the
 zero frequency component. The rectangular function represents an ideal
 low pass filter. Note that
 \begin{align}
@@ -557,15 +558,61 @@ by plotting the graph below.
 ,ref=\thesection.\theenumi]
 \item Design a Butterworth filter for $H(f)$.
 
-\solution
-\item Design a Chebyschev filter for $H(f)$.
+\solution The Butterworth filter has an amplitude response
+given by
+\begin{align}
+    \abs{H\brak{f}}^2 = \frac{1}{\brak{1 + \brak{\frac{f}{f_c}}^2}^n}
+\end{align}
+where $n$ is the order of the filter and $f_c$ is the cutoff
+frequency. The loss at frequency $f$ is given by 
+\begin{align}
+    \text{Loss} &= -10\log_{10}\abs{H\brak{f}}^2 \\
+                &= -20\log_{10}\abs{H\brak{f}}
+\end{align}
+Assuming the cutoff frequency to be at $f_0$, the Python code
+\texttt{codes/5\_1.py} plots the magnitude response for different 
+values of $n$ as shown below.
+\begin{figure}[!ht]
+    \includegraphics[width=\columnwidth]{figs/5_1.png}
+    \caption{Butterworth response for various $n$.}
+    \label{fig:butter-resp}
+\end{figure}
+At $f = 10f_c$, we obtain a 40 dB loss for $n = 2$, which is
+ideal. Hence, we choose $n = 2$. Further, note that the
+DC gain is $\frac{5}{12}$.
 
-\solution
+\item Design a Chebyshev filter for $H(f)$.
+
+\solution The Chebyshev filter has an amplitude response
+given by
+\begin{align}
+    \abs{H\brak{f}}^2 = \frac{1}{\brak{1 + \epsilon^2C_n^2\brak{\frac{f}{f_c}}^2}^n}
+\end{align}
+where $n$ is the order of the filter, $\epsilon$ is the
+ripple, $f_c$ is the cutoff frequency and $C_n$ denotes 
+the n\textsuperscript{th} order Chebyshev polynomial. 
+Assuming the cutoff frequency to be at $f_0$, the Python 
+codes \texttt{codes/5\_2.py} and \texttt{codes/5\_3.py} plot
+the magnitude response for different values of $n$.
+\begin{figure}[!ht]
+    \includegraphics[width=\columnwidth]{figs/5_2.png}
+    \caption{Chebyshev response for various $n$.}
+    \label{fig:cheby-resp}
+\end{figure}
+\begin{figure}
+    \includegraphics[width=\columnwidth]{figs/5_3.png}
+    \caption{Chebyshev response for various $n$, in detail.}
+    \label{fig:cheby-resp-zoom}
+\end{figure}
+At $f = 10f_c$, we obtain close to 40 dB loss for $n = 2$, which is
+ideal. Hence, we choose $n = 2$. Further, note that the
+DC gain is $\frac{5}{12}$.
+
 \item Design a circuit for your Butterworth filter.
 
-\solution
+\solution 
 \item Design a circuit for your Chebyschev filter.
 
-\solution
+\solution 
 \end{enumerate}
 \end{document}
