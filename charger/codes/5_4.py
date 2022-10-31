@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 import os
 from scipy import signal
 
+os.system('ngspice 5_4.cir')
 A = np.loadtxt('resp_cheby.txt')
 n = 4
 fc = 60
@@ -14,4 +15,4 @@ plt.semilogx(f, 20*np.log10(np.abs(h)))
 plt.grid()
 plt.legend(['Simulation', 'Analysis'])
 plt.savefig('../figs/5_4.png')
-os.system('sh gopen.sh ../figs/5_4.png')
+#os.system('sh gopen.sh ../figs/5_4.png')
