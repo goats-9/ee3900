@@ -1,11 +1,12 @@
 #!/bin/bash
 
 #Check if software is downloaded
-if [[ !(`which svn` && `which latexmk` && `which python3`) ]]; then
+if [[ !(`which svn` && `which ngspice` && `which latexmk` && `which python3`) ]]; then
     echo "[ERROR] Please install the following software or the equivalent on your system"
     echo "1. python3"
-    echo "2. latexmk"
-    echo "3. svn"
+    echo "2. ngspice"
+    echo "3. latexmk"
+    echo "4. svn"
     exit 1
 fi
 

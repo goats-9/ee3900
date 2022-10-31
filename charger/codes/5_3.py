@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import os
 from scipy import signal
 
-os.system('ngspice 5_3.cir')
+os.system('cat 5_3.cir | ngspice')
 A = np.loadtxt('resp_butter.txt')
 n = 5
 fc = 60

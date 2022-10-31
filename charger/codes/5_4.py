@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import os
 from scipy import signal
 
-os.system('ngspice 5_4.cir')
+os.system('cat 5_4.cir | ngspice')
 A = np.loadtxt('resp_cheby.txt')
 n = 4
 fc = 60
