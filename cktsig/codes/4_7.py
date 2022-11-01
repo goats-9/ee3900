@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 import os
 from scipy import signal
 
+os.system('cat 4_7.cir | ngspice')
 k = 1.5e6
 T = 1e-7
 tau = 2e-6/3
@@ -22,4 +23,4 @@ v3 = np.loadtxt('v3.txt')
 plt.plot(v3[:,0], v3[:,1], '.')
 plt.legend(['Theory (continuous)', 'Theory (discrete)', 'Simulation (ngspice)'])
 plt.savefig('../figs/4_7.png')
-os.system('sh gopen.sh ../figs/4_7.png')
+#os.system('sh gopen.sh ../figs/4_7.png')

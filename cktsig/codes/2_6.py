@@ -1,6 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
+import os
 
+os.system('cat 2_7.cir | ngspice')
 def unitstep(t):
     if (t < 0): return 0
     elif (t == 0):return 0.5
@@ -20,3 +22,4 @@ plt.ylabel('$v_{C_0}(t)$ (V)')
 plt.grid()
 plt.legend(['Simulation', 'Analysis'])
 plt.savefig('../figs/2_6.png')
+#os.system('sh gopen.sh ../figs/2_6.png')
