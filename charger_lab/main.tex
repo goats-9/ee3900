@@ -122,7 +122,14 @@ The schematic diagram of the entire circuit is shown in Fig. \ref{fig:ckt}.
 \begin{figure}[!htb]
     \centering
     \begin{circuitikz}
-        \draw (0,0) to[R] (3,0);
+        \ctikzset{quadpoles/transformer/height=4}
+        \draw (0,0) node[ground](G){} to[short] (0,1) to[sV, l = 220 V] (0,6) -- ++(1,0)
+            node[transformer, circuitikz/inductors/coils=6, anchor=A1](T){};
+        \draw (T.A2) to[short] (T.A2-|G);
+        \draw (T-L2.midtap) to[short] (T.B1 |- T-L2.midtap);
+        \node [ground] at (T.B1 |- T-L2.midtap){};
+	\draw (T.B1) -- ++(3,0) -- ++(0,-1) node[](Ap){} to [D] ++(2,0) -- ++(0,-1.5) node[](Cp){} -- ++(0,-1.5) to[D, invert] ++(-2,0) node[](An){} to[D] ++(-2,0) -- ++(0,1.5) node[](Cn){} -- ++(0,1.5) to[D, invert] ++(2,0);
+	\draw (T.B2) -- ++(3,0) -- (An);
     \end{circuitikz}
     \caption{}
     \label{fig:ckt}
@@ -176,7 +183,7 @@ The screenshots of the waveforms at each stage are shown ahead.
 \begin{figure}[!ht]
     \includegraphics[width=\columnwidth]{figs/regulator_dc.jpg}
     \caption{Output DC waveform at regulator stage.}
-    \label{fig:regulator-dc}
+    \label{fig:regulator_dc}
 \end{figure}
 
 \begin{figure}[!ht]
